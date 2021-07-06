@@ -1,4 +1,17 @@
 
+local clientside = true
+local modname = core.get_current_modname()
+if modname then
+	-- client mods handle modpath differently
+	clientside = core.get_modpath(modname) == "cmus:"
+end
+
+if not clientside then
+	core.log("error", "[cmus] not installed as client-side mod, not loading")
+	return
+end
+
+
 local handle
 local current_file
 
