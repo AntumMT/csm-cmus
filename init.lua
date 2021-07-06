@@ -2,8 +2,25 @@
 local handle
 local current_file
 
+local function stop_music()
+	if handle then
+		core.sound_stop(handle)
+		handle = nil
+		current_file = nil
+	end
+
+	return handle == nil
+end
+
 local function play_music(fname)
 	if not fname then return false end
+
+	-- don't play over another song
+	stop_music()
+	if handle ~= nil then
+		core.log("error", "could not stop playing sound handle " .. handle .. ": " .. tostring(current_file))
+		return false
+	end
 
 	handle = core.sound_play({name=fname, gain=1.0})
 	local playing = handle ~= nil and handle > 0
@@ -13,16 +30,6 @@ local function play_music(fname)
 	end
 
 	return playing
-end
-
-local function stop_music()
-	if handle then
-		core.sound_stop(handle)
-		handle = nil
-		current_file = nil
-	end
-
-	return handle == nil
 end
 
 core.register_chatcommand("cmus", {
