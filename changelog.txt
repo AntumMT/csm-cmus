@@ -1,0 +1,5 @@
+
+v0.1
+----
+- initial release
+- created play/stop methods & chat commands
